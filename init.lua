@@ -20,14 +20,26 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
   { "catppuccin/nvim", name="catppuccin", priority = 1000 },
   { 'nvim-telescope/telescope.nvim', tag = '0.1.5', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
 }
 
 local opts = {}
 
 require("lazy").setup(plugins, opts)
+
+-- Color scheme
 require("catppuccin").setup()
 vim.cmd.colorscheme "catppuccin"
 
+-- Telescope
 local builtin = require("telescope.builtin")
 vim.keymap.set('n', '<C-p>', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+
+-- Treesitter
+local config = require("nvim-treesitter.configs")
+config.setup({
+  ensure_installed = {"lua", "javascript", "java"},
+  highlight = { enable = true },
+  indent = { enable = true },
+})
